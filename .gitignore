@@ -1,4 +1,3 @@
-# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -22,17 +21,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# IDE
+.DS_Store
+data/*.csv
+data/*.json
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Data files (optional - uncomment if you want to exclude)
-# data/*.csv
