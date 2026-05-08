@@ -7,12 +7,9 @@ Original file is located at
     https://colab.research.google.com/drive/1Hjxx7BMbgyX9aJw3nZl2TgLuWCLn4ME2
 """
 
-!pip install fredapi
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from fredapi import Fred
 
 from pandas.io.parsers import TextFileReader
 import requests
@@ -95,7 +92,7 @@ for start, end, color, label in phases:
     ax.axvspan(pd.to_datetime(start), pd.to_datetime(end),
                alpha=0.07, color=color, label=label)
 
-# --- Step line ---
+
 ax.step(df_5yr['Date'], df_5yr['Repo_Rate'],
         where='post', color='#185FA5', linewidth=2.5, zorder=3)
 
@@ -105,11 +102,10 @@ ax.scatter(changed['Date'], changed['Repo_Rate'],
            color='white', edgecolors='#185FA5',
            s=70, linewidth=2, zorder=5)
 
-# --- Fill under line ---
+
 ax.fill_between(df_5yr['Date'], df_5yr['Repo_Rate'],
                 step='post', alpha=0.07, color='#185FA5')
 
-# --- Annotate rate change points ---
 prev_rate = None
 for _, row in changed.iterrows():
     if prev_rate is not None:
@@ -123,7 +119,6 @@ for _, row in changed.iterrows():
                     color=color, fontweight='bold')
     prev_rate = row['Repo_Rate']
 
-# --- Latest rate callout ---
 latest_date = df_5yr['Date'].iloc[-1]
 latest_rate = df_5yr['Repo_Rate'].iloc[-1]
 ax.scatter(latest_date, latest_rate,
@@ -132,7 +127,6 @@ ax.annotate(f"  Current: {latest_rate}%",
             xy=(latest_date, latest_rate),
             fontsize=11, color='#e53935', fontweight='bold', va='center')
 
-# --- Titles & Labels ---
 today_str = datetime.today().strftime("%d %b %Y")
 ax.set_title("RBI Policy Repo Rate · MPC Meeting History",
              fontsize=15, fontweight='bold', pad=18, loc='left')
@@ -140,7 +134,6 @@ ax.set_xlabel("")
 ax.set_ylabel("Repo Rate (%)", fontsize=11, color='#555')
 ax.tick_params(colors='#777', labelsize=10)
 
-# --- Phase legend (top right) ---
 handles = [plt.Rectangle((0,0),1,1, color=c, alpha=0.3)
            for _, _, c, _ in phases]
 labels_list = [l for _, _, _, l in phases]
@@ -148,7 +141,6 @@ ax.legend(handles, labels_list,
           loc='upper right', fontsize=9,
           framealpha=0.9, edgecolor='#ddd')
 
-# --- Grid & formatting ---
 ax.yaxis.grid(True, linestyle='--', alpha=0.4, color='#aaa')
 ax.xaxis.grid(False)
 ax.set_facecolor('#fafafa')
@@ -157,7 +149,6 @@ ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
 ax.xaxis.set_major_locator(mdates.MonthLocator(interval=4))
 plt.xticks(rotation=45)
 
-# --- Footer ---
 fig.text(0.01, -0.03,
          f"Source: RBI via StableInvestor.com  ·  Auto-updated  ·  As of {today_str}",
          fontsize=9, color='#999')
